@@ -1,0 +1,6 @@
+main:
+  dialect: postgres
+  datasource: host=${DB_CORE_HOST} port=${DB_CORE_PORT} dbname=${DB_CORE_NAME} user=${DB_CORE_USER} password=${DB_CORE_PASSWORD} sslmode=disable
+  dir: migrations
+  table: migrations
+
