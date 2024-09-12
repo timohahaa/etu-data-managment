@@ -25,21 +25,17 @@ CREATE TABLE IF NOT EXISTS etu.group (
     , CONSTRAINT uniq_group_number_stream_id UNIQUE(number, stream_id)
 );
 
-CREATE TABLE IF NOT EXISTS etu.exam_list (
-    list_id     UUID          DEFAULT uuid_generate_v4() PRIMARY KEY
-    , group_id  UUID NOT NULL REFERENCES etu.group(group_id)
-    , stream_id UUID NOT NULL REFERENCES etu.educational_stream(stream_id)
-);
-
 CREATE TABLE IF NOT EXISTS etu.applicant (
     applicant_id    UUID                 DEFAULT uuid_generate_v4() PRIMARY KEY
     , name          VARCHAR(50) NOT NULL
     , surname       VARCHAR(50) NOT NULL
     , fathername    VARCHAR(50)
-    , email         VARCHAR(50) UNIQUE 
-    , list_id       UUID        NOT NULL UNIQUE REFERENCES etu.exam_list(list_id)
+    , email         VARCHAR(50)          UNIQUE 
+    , list_id       UUID        NOT NULL UNIQUE DEFAULT uuid_generate_v4()
     , department_id UUID        NOT NULL REFERENCES etu.department(department_id)
     , faculty_id    UUID        NOT NULL REFERENCES etu.faculty(faculty_id)
+    , group_id  UUID NOT NULL REFERENCES etu.group(group_id)
+    , stream_id UUID NOT NULL REFERENCES etu.educational_stream(stream_id)
 
     , CONSTRAINT applicant_email_check CHECK (email ~ '^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$') -- html5 spec regexp
 );
@@ -76,7 +72,7 @@ CREATE TABLE IF NOT EXISTS etu.exam (
 CREATE TABLE IF NOT EXISTS etu.grade (
     grade_id  UUID              DEFAULT uuid_generate_v4() PRIMARY KEY
     , value   SMALLINT
-    , list_id UUID     NOT NULL REFERENCES etu.exam_list(list_id)
+    , list_id UUID     NOT NULL REFERENCES etu.applicant(list_id)
     , exam_id UUID     NOT NULL REFERENCES etu.exam(exam_id)
     , status TEXT      NOT NULL -- default??
 
@@ -85,7 +81,7 @@ CREATE TABLE IF NOT EXISTS etu.grade (
 );
 
 CREATE TABLE IF NOT EXISTS etu.exam_list_exam (
-    list_id   UUID NOT NULL REFERENCES etu.exam_list(list_id)
+    list_id   UUID NOT NULL REFERENCES etu.applicant(list_id)
     , exam_id UUID NOT NULL REFERENCES etu.exam(exam_id)
     , status  TEXT NOT NULL -- default??
 
