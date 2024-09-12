@@ -26,8 +26,9 @@ CREATE TABLE IF NOT EXISTS etu.group (
 );
 
 CREATE TABLE IF NOT EXISTS etu.exam_list (
-    list_id    UUID          DEFAULT uuid_generate_v4() PRIMARY KEY
-    , group_id UUID NOT NULL REFERENCES etu.group(group_id)
+    list_id     UUID          DEFAULT uuid_generate_v4() PRIMARY KEY
+    , group_id  UUID NOT NULL REFERENCES etu.group(group_id)
+    , stream_id UUID NOT NULL REFERENCES etu.educational_stream(stream_id)
 );
 
 CREATE TABLE IF NOT EXISTS etu.applicant (
