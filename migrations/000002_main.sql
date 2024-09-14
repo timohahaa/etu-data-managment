@@ -79,6 +79,7 @@ CREATE TABLE IF NOT EXISTS etu.grade (
 
     , CONSTRAINT grade_value_check CHECK (value BETWEEN 2 AND 5)
     , CONSTRAINT grade_status_check CHECK (status = ANY(ARRAY['appeal'::TEXT, 'final'::TEXT, 'pending'::TEXT]))
+    , CONSTRAINT grade_list_exam_uniq UNIQUE(grade_id, list_id, exam_id)
 );
 
 CREATE TABLE IF NOT EXISTS etu.exam_list_exam (
