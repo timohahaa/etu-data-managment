@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS etu.subject (
     , name     VARCHAR(50) NOT NULL UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS etu.auditory (
-    auditory_id UUID              DEFAULT uuid_generate_v4() PRIMARY KEY
+CREATE TABLE IF NOT EXISTS etu.auditorium (
+    auditorium_id UUID              DEFAULT uuid_generate_v4() PRIMARY KEY
     , floor     SMALLINT NOT NULL
     , building  SMALLINT NOT NULL
 );
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS etu.consultation (
     consultation_id     UUID               DEFAULT uuid_generate_v4() PRIMARY KEY
     , subject_id        UUID      NOT NULL REFERENCES etu.subject(subject_id)
     , stream_id         UUID      NOT NULL REFERENCES etu.educational_stream(stream_id)
-    , auditory_id       UUID      NOT NULL REFERENCES etu.auditory(auditory_id)
+    , auditorium_id       UUID      NOT NULL REFERENCES etu.auditorium(auditorium_id)
     , scheduled_at      TIMESTAMP NOT NULL
     , to_be_finished_at TIMESTAMP NOT NULL
 );
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS etu.exam (
     exam_id             UUID               DEFAULT uuid_generate_v4() PRIMARY KEY
     , subject_id        UUID      NOT NULL REFERENCES etu.subject(subject_id)
     , stream_id         UUID      NOT NULL REFERENCES etu.educational_stream(stream_id)
-    , auditory_id       UUID      NOT NULL REFERENCES etu.auditory(auditory_id)
+    , auditorium_id       UUID      NOT NULL REFERENCES etu.auditorium(auditorium_id)
     , scheduled_at      TIMESTAMP NOT NULL
     , to_be_finished_at TIMESTAMP NOT NULL
 );
