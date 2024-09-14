@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS etu.applicant (
     , list_id       UUID        NOT NULL UNIQUE DEFAULT uuid_generate_v4()
     , department_id UUID        NOT NULL REFERENCES etu.department(department_id)
     , faculty_id    UUID        NOT NULL REFERENCES etu.faculty(faculty_id)
-    , group_id  UUID NOT NULL REFERENCES etu.group(group_id)
-    , stream_id UUID NOT NULL REFERENCES etu.educational_stream(stream_id)
+    , group_id      UUID        NOT NULL REFERENCES etu.group(group_id)
+    , stream_id     UUID        NOT NULL REFERENCES etu.educational_stream(stream_id)
 
     , CONSTRAINT applicant_email_check CHECK (email ~ '^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$') -- html5 spec regexp
 );
@@ -46,16 +46,17 @@ CREATE TABLE IF NOT EXISTS etu.subject (
 );
 
 CREATE TABLE IF NOT EXISTS etu.auditorium (
-    auditorium_id UUID              DEFAULT uuid_generate_v4() PRIMARY KEY
-    , floor     SMALLINT NOT NULL
-    , building  SMALLINT NOT NULL
+    auditorium_id UUID                 DEFAULT uuid_generate_v4() PRIMARY KEY
+    , number      VARCHAR(10) NOT NULL
+    , floor       SMALLINT    NOT NULL
+    , building    SMALLINT    NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS etu.consultation (
     consultation_id     UUID               DEFAULT uuid_generate_v4() PRIMARY KEY
     , subject_id        UUID      NOT NULL REFERENCES etu.subject(subject_id)
     , stream_id         UUID      NOT NULL REFERENCES etu.educational_stream(stream_id)
-    , auditorium_id       UUID      NOT NULL REFERENCES etu.auditorium(auditorium_id)
+    , auditorium_id     UUID      NOT NULL REFERENCES etu.auditorium(auditorium_id)
     , scheduled_at      TIMESTAMP NOT NULL
     , to_be_finished_at TIMESTAMP NOT NULL
 );
@@ -64,7 +65,7 @@ CREATE TABLE IF NOT EXISTS etu.exam (
     exam_id             UUID               DEFAULT uuid_generate_v4() PRIMARY KEY
     , subject_id        UUID      NOT NULL REFERENCES etu.subject(subject_id)
     , stream_id         UUID      NOT NULL REFERENCES etu.educational_stream(stream_id)
-    , auditorium_id       UUID      NOT NULL REFERENCES etu.auditorium(auditorium_id)
+    , auditorium_id     UUID      NOT NULL REFERENCES etu.auditorium(auditorium_id)
     , scheduled_at      TIMESTAMP NOT NULL
     , to_be_finished_at TIMESTAMP NOT NULL
 );
@@ -74,7 +75,7 @@ CREATE TABLE IF NOT EXISTS etu.grade (
     , value   SMALLINT
     , list_id UUID     NOT NULL REFERENCES etu.applicant(list_id)
     , exam_id UUID     NOT NULL REFERENCES etu.exam(exam_id)
-    , status TEXT      NOT NULL -- default??
+    , status  TEXT     NOT NULL -- default??
 
     , CONSTRAINT grade_value_check CHECK (value BETWEEN 2 AND 5)
     , CONSTRAINT grade_status_check CHECK (status = ANY(ARRAY['appeal'::TEXT, 'final'::TEXT, 'pending'::TEXT]))
