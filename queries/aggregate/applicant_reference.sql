@@ -6,4 +6,5 @@ SELECT
     , COALESCE(A.fathername, 'no-fathername') AS applicant_fathername
     , F.name AS faculty_name
 FROM etu.applicant A
-JOIN etu.faculty F ON A.faculty_id = F.faculty_id;
+JOIN etu.faculty F ON A.faculty_id = F.faculty_id
+WHERE A.applicant_id = $1;
