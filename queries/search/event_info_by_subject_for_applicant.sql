@@ -5,4 +5,5 @@ SELECT
 FROM etu.applicant A
 LEFT JOIN etu.consultation C ON C.stream_id = A.stream_id
 LEFT JOIN etu.exam E ON E.stream_id = A.stream_id
-WHERE A.applicant_id = $1;
+WHERE A.applicant_id = $1
+    AND (C.subject_id = $2 OR E.subject_id = $2);
